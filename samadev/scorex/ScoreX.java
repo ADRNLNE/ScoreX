@@ -1,6 +1,5 @@
 package samadev.scorex;
 
-import asia.potnation.practice.utilities.C;
 import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
