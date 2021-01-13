@@ -13,7 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ class PlayerBoard {
     public PlayerBoard(Player player) {
         this.player = player;
         this.lines = new ArrayList<>();
-        this.objective = getScoreboard().registerNewObjective("ScoreX", "dummy");
+        this.objective = player.getScoreboard().registerNewObjective("ScoreX", "dummy");
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.objective.setDisplayName(ChatColor.translateAlternateColorCodes('&', ScoreX.getInst().getContents().getTitle(player)));
     }
@@ -78,12 +77,12 @@ class PlayerBoard {
         List<String> lines = ScoreX.getInst().getContents().getLines(player).stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList());
         Collections.reverse(lines);
         objective.setDisplayName(title.length() > 32 ? title.substring(0, 32) : title);
-        if (getScoreboard().getEntries().size() != lines.size()) getScoreboard().getEntries().forEach(getScoreboard()::resetScores);
+        if (player.getScoreboard().getEntries().size() != lines.size()) player.getScoreboard().getEntries().forEach(player.getScoreboard()::resetScores);
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i), prefix = line, suffix = "", name = ChatColor.values()[i].toString() + ChatColor.RESET.toString();
-            Team team = getScoreboard().getTeam(name);
+            Team team = player.getScoreboard().getTeam(name);
             if (team == null) {
-                team = getScoreboard().registerNewTeam(name);
+                team = player.getScoreboard().registerNewTeam(name);
                 team.addEntry(name);
             }
             if (line.length() > 16) {
@@ -98,9 +97,5 @@ class PlayerBoard {
             team.setSuffix(suffix);
             objective.getScore(team.getName()).setScore(i + 1);
         }
-    }
-
-    public Scoreboard getScoreboard() {
-        return player.getScoreboard();
     }
 }
