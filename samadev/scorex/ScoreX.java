@@ -34,10 +34,6 @@ public class ScoreX extends BukkitRunnable implements Listener {
         this.boards = new ArrayList<>();
         Bukkit.getPluginManager().registerEvents(this, plugin);
         runTaskTimer(plugin, 0L, interval);
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            if (p.getScoreboard().equals(Bukkit.getScoreboardManager().getMainScoreboard())) p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-            boards.add(new PlayerBoard(p));
-        });
     }
 
     public PlayerBoard getBoard(Player player) {
